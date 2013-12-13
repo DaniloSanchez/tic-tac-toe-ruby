@@ -4,9 +4,9 @@ class Dashboard
     @machine = '_X_'
     @human = '_O_'
     @empty = '___'
-    @dashboard =[ [@empty, @empty, @empty],
-                  [@empty, @empty, @empty],
-                  [@empty, @empty, @empty] ]
+    @dashboard =[ [@human, @human, @human],
+                  [@human, @machine, @human],
+                  [@human, @human, @human] ]
   end
 
   def print_dashboard
@@ -21,11 +21,22 @@ class Dashboard
     @dashboard[position.first][ position.last] = (user ==  0 ? @machine : @human)
   end
 
+  def movements_exist?
+    @dashboard.any? do
+      |elem| elem.any? { |cell| cell == @empty }
+    end
+  end
+
+  def diagonal? 
+
+  end
+
 end
 
 
 i = Dashboard.new
 i.print_dashboard
-_pos = [1,1]
-i.do_movement(1,_pos) if i.position_is_valid?(_pos)
-i.print_dashboard
+#_pos = [1,1]
+#i.do_movement(1,_pos) if i.position_is_valid?(_pos)
+#i.print_dashboard
+p i.movements_exist?
