@@ -65,15 +65,3 @@ class Dashboard
   end
 
 end
-
-
-i = Dashboard.new
-i.print_dashboard
-#_pos = [1,1]
-#i.do_movement(1,_pos) if i.position_is_valid?(_pos)
-#i.print_dashboard
-#i.movements_exist
-p i.check_rows
-p i.check_columns
-i.print_dashboard
-p i.check_diagonal
