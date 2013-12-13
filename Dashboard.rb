@@ -26,9 +26,9 @@ class Dashboard
   end
 
   def check_rows
-    @dashboard.map.any? do
-      |row| row.all? { |elem| elem == @human } ||
-        row.all? { |elem| elem == @machine }
+    @dashboard.map.any? do |row| 
+      row.all? { |elem| elem == @human } ||
+      row.all? { |elem| elem == @machine }
     end
   end
 
@@ -56,12 +56,25 @@ class Dashboard
   end
 
   def transpose_dashboard_aux(temporal_dashboard)
-    @dashboard.map do 
-      |row| temporal_dashboard.first << row.first
-        temporal_dashboard[1] << row[1]
-        temporal_dashboard.last << row.last
+    @dashboard.map do |row| 
+      temporal_dashboard.first << row.first
+      temporal_dashboard[1] << row[1]
+      temporal_dashboard.last << row.last
     end
     temporal_dashboard
   end
 
 end
+
+
+i = Dashboard.new
+i.print_dashboard
+#_pos = [1,1]
+#i.do_movement(1,_pos) if i.position_is_valid?(_pos)
+#i.print_dashboard
+#i.movements_exist
+p i.check_rows
+p i.check_columns
+i.print_dashboard
+p i.check_diagona
+l
