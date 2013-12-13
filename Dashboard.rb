@@ -4,9 +4,9 @@ class Dashboard
     @machine = '_X_'
     @human = '_O_'
     @empty = '___'
-    @dashboard =[ [@human, @human, @human],
-                  [@human, @machine, @human],
-                  [@human, @human, @human] ]
+    @dashboard = [ [@human, @human,  @human],
+                   [@machine, @machine, @human],
+                   [@human, @machine, @machine] ]
   end
 
   def print_dashboard
@@ -27,8 +27,30 @@ class Dashboard
     end
   end
 
-  def diagonal? 
+  def row?
+    @dashboard.map.any? do
+      |row| row.all? { |elem| elem == @human } ||
+        row.all? { |elem| elem == @machine }
+    end
+  end
 
+  def column?
+    transpose_dashboard
+    result = row?
+    transpose_dashboard
+    result
+  end
+
+  private
+
+  def transpose_dashboard
+    temporal_dashboard = [[],[],[]]
+    @dashboard.map do 
+      |row| temporal_dashboard.first << row.first
+        temporal_dashboard[1] << row[1]
+        temporal_dashboard.last << row.last
+    end
+    @dashboard = temporal_dashboard
   end
 
 end
@@ -39,4 +61,7 @@ i.print_dashboard
 #_pos = [1,1]
 #i.do_movement(1,_pos) if i.position_is_valid?(_pos)
 #i.print_dashboard
-p i.movements_exist?
+#i.movements_exist
+p i.row?
+p i.column?
+i.print_dashboard
