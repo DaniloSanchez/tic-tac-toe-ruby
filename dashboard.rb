@@ -23,7 +23,7 @@ class Dashboard
   end
 
   def do_movement(user, position)
-    @dashboard[position.first][position.last] = (user.even? ? @player_one : @player_two)
+    @dashboard[position.first][position.last] = (user == "Player 1" ? @player_one : @player_two)
   end
 
   def movements_exist?

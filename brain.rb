@@ -28,12 +28,11 @@ class Brain
 
   def in_process(player)
     @idashboard.print_dashboard
-    @idashboard.message_next_player(player)
+    @imessages.message_next_player(player)
     loop do
       pos_x = position_row
       pos_y = position_column
-
-      break unless @idashboard.position_is_valid?([pos_x,pos_y])
+      break unless @idashboard.do_movement(player, [pos_x, pos_y]) if @idashboard.position_is_valid?([pos_x,_pox_y])
     end
   end
 
