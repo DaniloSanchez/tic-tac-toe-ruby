@@ -4,13 +4,17 @@ class Dashboard
     @machine = '_X_'
     @human = '_O_'
     @empty = '___'
-    @dashboard = [ [@empty, @empty, @empty],
-                   [@empty, @empty, @empty],
-                   [@empty, @empty, @empty] ]
+    @dashboard = [ [@machine, @empty, @machine],
+                   [@empty, @machine, @empty],
+                   [@human, @human, @human] ]
   end
 
   def print_dashboard
     @dashboard.each { |row| p row }
+  end
+
+  def check_status
+    check_rows || check_columns || check_diagonals
   end
 
   def position_is_valid?(position)
@@ -39,16 +43,26 @@ class Dashboard
     result
   end
 
-  def check_diagonal
-    (@dashboard[0][0] && @dashboard[1][1] && @dashboard[2][2]) == @human ||
-      (@dashboard[0][0] && @dashboard[1][1] && @dashboard[2][2]) == @machine
-  end
-
-  def check_inverse_diagonal
-
+  def check_diagonals
+    check_diagonal(@human) ||
+    check_diagonal(@machine) ||
+    check_inverse_diagonal(@human) ||
+    check_inverse_diagonal(@machine)
   end
 
   private
+
+  def check_diagonal(opcion)
+    @dashboard[0][0] == opcion &&
+    @dashboard[1][1] == opcion &&
+    @dashboard[2][2] == opcion
+  end
+
+  def check_inverse_diagonal(opcion)
+    @dashboard[0][2] == opcion &&
+    @dashboard[1][1] == opcion &&
+    @dashboard[2][0] == opcion
+  end
 
   def transpose_dashboard
     temporal_dashboard = [[],[],[]]
@@ -56,7 +70,7 @@ class Dashboard
   end
 
   def transpose_dashboard_aux(temporal_dashboard)
-    @dashboard.map do |row| 
+    @dashboard.map do |row|
       temporal_dashboard.first << row.first
       temporal_dashboard[1] << row[1]
       temporal_dashboard.last << row.last
@@ -71,10 +85,5 @@ i = Dashboard.new
 i.print_dashboard
 #_pos = [1,1]
 #i.do_movement(1,_pos) if i.position_is_valid?(_pos)
-#i.print_dashboard
-#i.movements_exist
-p i.check_rows
-p i.check_columns
+p i.check_status
 i.print_dashboard
-p i.check_diagona
-l
