@@ -4,9 +4,9 @@ class Dashboard
     @machine = '_X_'
     @human = '_O_'
     @empty = '___'
-    @dashboard = [ [@machine, @empty, @machine],
-                   [@empty, @machine, @empty],
-                   [@human, @human, @human] ]
+    @dashboard = [ [@empty, @empty, @empty],
+                   [@empty, @empty, @empty],
+                   [@empty, @empty, @empty] ]
   end
 
   def print_dashboard
@@ -79,11 +79,3 @@ class Dashboard
   end
 
 end
-
-
-i = Dashboard.new
-i.print_dashboard
-#_pos = [1,1]
-#i.do_movement(1,_pos) if i.position_is_valid?(_pos)
-p i.check_status
-i.print_dashboard
