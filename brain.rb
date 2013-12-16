@@ -25,20 +25,29 @@ class Brain
 
   def in_process
     @player = @turn.even? ? "Player 1" : "Player 2"
+    print_dashboard_and_next_player
     in_process_auxiliar
     @turn = @turn += 1
   end
 
-
   def in_process_auxiliar
-    @idashboard.print_dashboard
-    @imessages.message_next_player(@player)
     loop do
-      pos_x = position_row
-      pos_y = position_column
-      break @idashboard.do_movement(@player, [pos_x.to_i, pos_y.to_i]) if @idashboard.position_is_valid?([pos_x.to_i,pos_y.to_i])
+    pos = get_positions
+    break @idashboard.do_movement(@player, pos) if @idashboard.position_is_valid?(pos)
       @imessages.message_invalid_movement
     end
+  end
+
+  def get_positions
+    pos_x = position_row
+    pos_y = position_column
+    [pos_x.to_i, pos_y.to_i]
+  end
+
+
+  def print_dashboard_and_next_player
+    @idashboard.print_dashboard
+    @imessages.message_next_player(@player)
   end
 
   def position_row
@@ -60,4 +69,3 @@ end
 
 game = Brain.new
 game.strat_game
-
