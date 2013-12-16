@@ -23,12 +23,14 @@ class Dashboard
   end
 
   def do_movement(user, position)
-    @dashboard[position.first][position.last] = (user ==  0 ? @player_one : @player_two)
+    @dashboard[position.first][position.last] = (user.even? ? @player_one : @player_two)
   end
 
   def movements_exist?
     @dashboard.any? { |elem| elem.any? { |cell| cell == @empty } }
   end
+
+  private
 
   def check_rows
     @dashboard.map.any? do |row| 
@@ -50,8 +52,6 @@ class Dashboard
     check_inverse_diagonal(@player_two) ||
     check_inverse_diagonal(@player_one)
   end
-
-  private
 
   def check_diagonal(opcion)
     @dashboard[0][0] == opcion &&

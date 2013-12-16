@@ -11,15 +11,6 @@ class Messages
     puts "Player 1  starts the game"
   end
 
-  def message_options_menu
-  end
-
-  def message_game_mode
-  end
-
-  def message_options_game
-  end
-
   def message_congratulations(player)
     puts "Congratulations #{player}, you win"
   end
@@ -32,8 +23,25 @@ class Messages
     puts "invalid movement, try again"
   end
 
+  def message_put_row
+    puts "now, select a number between 0 1 2 for the row"
+  end
+
+  def message_put_column
+    puts "now, select a number between 0 1 2 for the column"
+  end
+
   def message_next_player(player)
     puts "continue #{player}"
+  end
+
+  def message_options_menu
+  end
+
+  def message_game_mode
+  end
+
+  def message_options_game
   end
 
   def message_quit
