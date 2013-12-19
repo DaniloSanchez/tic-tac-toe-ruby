@@ -1,57 +1,36 @@
 class Validation
 
-  def check_status(dashboard, player_one, player_two)
-    check_rows(dashboard, player_one, player_two) ||
-    check_columns(dashboard, player_one, player_two) ||
-    check_diagonals(dashboard, player_one, player_two)
+  def positions_to_win
+    [[[0,0],[0,1],[0,2]],
+     [[1,0],[1,1],[1,2]],
+     [[2,0],[2,1],[2,2]],
+     [[0,0],[1,0],[2,0]],
+     [[0,1],[1,1],[2,1]],
+     [[0,2],[1,2],[2,2]],
+     [[0,0],[1,1],[2,2]],
+     [[0,2],[1,1],[2,0]]
+    ]
   end
 
-  private
-
-  def check_rows(dashboard, player_one, player_two)
-    dashboard.map.any? do |row|
-      row.all? { |elem| elem == player_two } ||
-      row.all? { |elem| elem == player_one }
+  def check_status(dashboard, option)
+    positions_to_win.any? do |element|
+      (0..2).all? do |number|
+        dashboard[element[number].first][element[number].last] == option
+      end
     end
   end
-
-  def check_columns(dashboard, player_one, player_two)
-    new_transpose_dashboard = transpose_dashboard(dashboard)
-    result = check_rows(new_transpose_dashboard, player_one, player_two)
-    result
-  end
-
-  def check_diagonals(dashboard, player_one, player_two )
-    check_diagonal(dashboard, player_two) ||
-    check_diagonal(dashboard, player_one) ||
-    check_inverse_diagonal(dashboard, player_two) ||
-    check_inverse_diagonal(dashboard, player_one)
-  end
-
-  def check_diagonal(dashboard, opcion_player)
-    dashboard[0][0] == opcion_player &&
-    dashboard[1][1] == opcion_player &&
-    dashboard[2][2] == opcion_player
-  end
-
-  def check_inverse_diagonal(dashboard, opcion_player)
-    dashboard[0][2] == opcion_player &&
-    dashboard[1][1] == opcion_player &&
-    dashboard[2][0] == opcion_player
-  end
-
-  def transpose_dashboard(dashboard)
-    temporal_dashboard = [[],[],[]]
-    transpose_dashboard_aux(dashboard, temporal_dashboard)
-  end
-
-  def transpose_dashboard_aux(dashboard, temporal_dashboard)
-    dashboard.map do |row|
-      temporal_dashboard.first << row.first
-      temporal_dashboard[1] << row[1]
-      temporal_dashboard.last << row.last
-    end
-    temporal_dashboard
-  end
-
 end
+
+e = '___'
+x = '_X_'
+o = '_O_'
+
+var = [[x,e,e],
+       [e,x,e],
+       [e,e,e]
+      ]
+
+
+test = Validation.new
+p test.check_status(var, x)
+p test.check_status(var, o)
