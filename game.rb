@@ -2,7 +2,7 @@ require './messages'
 require './dashboard'
 require './validation'
 
-class Brain
+class Game
 
   def initialize
     @imessages = Messages.new
@@ -30,13 +30,13 @@ class Brain
   end
 
   def in_process
-    @player = @turn.even? ? @name_player_one : @name_player_two
     print_dashboard_and_next_player
     read_keyboard_in_process
     @turn = @turn += 1
   end
 
   def print_dashboard_and_next_player
+    @player = @turn.even? ? @name_player_one : @name_player_two
     @idashboard.print_dashboard
     @imessages.message_next_player(@player)
   end
@@ -70,6 +70,3 @@ class Brain
   end
 
 end
-
-game = Brain.new
-game.start_game
