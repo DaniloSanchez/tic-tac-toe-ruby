@@ -35,4 +35,25 @@ class Messages
     puts "continue #{player}"
   end
 
+  def message_name_player_one
+    puts "what is your name player 1"
+  end
+
+  def message_name_player_two
+    puts "what is your name player 2"
+  end
+
+ def message_quit
+   puts "EXIT THE GAME. ARE YOU SURE?"
+ end
+
+ def message_restart
+   puts "RESTART THE GAME. ARE YOU SURE?"
+ end
+
+ def message_play_again
+   puts "The game is over. Want to play again?"
+ end
+
+
 end

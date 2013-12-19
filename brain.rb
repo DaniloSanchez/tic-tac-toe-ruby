@@ -1,40 +1,54 @@
 load 'messages.rb'
 load 'dashboard.rb'
+load 'validation.rb'
 
 class Brain
 
   def initialize
     @imessages = Messages.new
     @idashboard = Dashboard.new
+    @ivalidation = Validation.new
+    @turn = 0
+    @player, @name_player_one, @name_player_two = ''
   end
 
-  def strat_game
+  def start_game
     @imessages.message_welcome
     @imessages.message_instructions
-    @turn = 0
-    @player = ''
+    set_names
     start
   end
 
+  private
+
   def start
-    while @idashboard.movements_exist? == true && @idashboard.check_status == false
+    while (@idashboard.exist_movement? && !@idashboard.check_status) == true
       in_process
     end
     congratulations
   end
 
   def in_process
-    @player = @turn.even? ? "Player 1" : "Player 2"
+    @player = @turn.even? ? @name_player_one : @name_player_two
     print_dashboard_and_next_player
-    in_process_auxiliar
+    read_keyboard_in_process
     @turn = @turn += 1
   end
 
-  def in_process_auxiliar
+  def print_dashboard_and_next_player
+    @idashboard.print_dashboard
+    @imessages.message_next_player(@player)
+  end
+
+  def read_keyboard_in_process
     loop do
-    pos = get_positions
-    break @idashboard.do_movement(@player, pos) if @idashboard.position_is_valid?(pos)
-      @imessages.message_invalid_movement
+      pos = get_positions
+      if @idashboard.position_is_valid?(pos)
+        @idashboard.do_movement(@turn,pos)
+        break
+      else
+        @imessages.message_invalid_movement
+      end
     end
   end
 
@@ -42,12 +56,6 @@ class Brain
     pos_x = position_row
     pos_y = position_column
     [pos_x.to_i, pos_y.to_i]
-  end
-
-
-  def print_dashboard_and_next_player
-    @idashboard.print_dashboard
-    @imessages.message_next_player(@player)
   end
 
   def position_row
@@ -62,10 +70,21 @@ class Brain
 
   def congratulations
     @idashboard.print_dashboard
-    @idashboard.check_status ? @imessages.message_congratulations(@player) : @imessages.message_draw
+    if @idashboard.exist_movement?
+      @imessages.message_congratulations(@player)
+    else
+      @imessages.message_draw
+    end
+  end
+
+  def set_names
+    @imessages.message_name_player_one
+    @name_player_one = gets.chomp
+    @imessages.message_name_player_two
+    @name_player_two = gets.chomp
   end
 
 end
 
 game = Brain.new
-game.strat_game
+game.start_game

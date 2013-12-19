@@ -19,18 +19,5 @@ class Validation
       end
     end
   end
+
 end
-
-e = '___'
-x = '_X_'
-o = '_O_'
-
-var = [[x,e,e],
-       [e,x,e],
-       [e,e,e]
-      ]
-
-
-test = Validation.new
-p test.check_status(var, x)
-p test.check_status(var, o)
