@@ -23,14 +23,6 @@ class Messages
     puts "invalid movement, try again"
   end
 
-  def message_put_row
-    puts "now, select a number between 0 1 2 for the row"
-  end
-
-  def message_put_column
-    puts "now, select a number between 0 1 2 for the column"
-  end
-
   def message_next_player(player)
     puts "continue #{player}"
   end
@@ -54,6 +46,5 @@ class Messages
  def message_play_again
    puts "The game is over. Want to play again?"
  end
-
 
 end

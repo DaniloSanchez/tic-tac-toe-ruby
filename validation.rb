@@ -12,12 +12,16 @@ class Validation
     ]
   end
 
-  def check_status(dashboard, option)
+  def check_status(dashboard)
+    check_status_by_player(dashboard,'_X_') ||
+    check_status_by_player(dashboard,'_O_')
+  end
+
+  def check_status_by_player(dashboard,option)
     positions_to_win.any? do |element|
       (0..2).all? do |number|
         dashboard[element[number].first][element[number].last] == option
       end
     end
   end
-
 end

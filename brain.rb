@@ -1,6 +1,6 @@
-load 'messages.rb'
-load 'dashboard.rb'
-load 'validation.rb'
+require './messages'
+require './dashboard'
+require './validation'
 
 class Brain
 
@@ -22,8 +22,9 @@ class Brain
   private
 
   def start
-    while (@idashboard.exist_movement? && !@idashboard.check_status) == true
+    while @idashboard.exist_movement? == true
       in_process
+      break if @ivalidation.check_status(@idashboard.get_dashboard)
     end
     congratulations
   end
@@ -42,7 +43,7 @@ class Brain
 
   def read_keyboard_in_process
     loop do
-      pos = get_positions
+      pos = @idashboard.get_positions
       if @idashboard.position_is_valid?(pos)
         @idashboard.do_movement(@turn,pos)
         break
@@ -52,25 +53,9 @@ class Brain
     end
   end
 
-  def get_positions
-    pos_x = position_row
-    pos_y = position_column
-    [pos_x.to_i, pos_y.to_i]
-  end
-
-  def position_row
-    @imessages.message_put_row
-    gets.chomp
-  end
-
-  def position_column
-    @imessages.message_put_column
-    gets.chomp
-  end
-
   def congratulations
     @idashboard.print_dashboard
-    if @idashboard.exist_movement?
+    if @ivalidation.check_status(@idashboard.get_dashboard)
       @imessages.message_congratulations(@player)
     else
       @imessages.message_draw
