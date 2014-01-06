@@ -1,12 +1,15 @@
 class Dashboard
 
+  attr_accessor :dashboard
+
   def initialize
     @player_one = '_X_'
     @player_two = '_O_'
     @empty = '___'
-    @dashboard = [ [@empty, @empty, @empty],
-                   [@empty, @empty, @empty],
-                   [@empty, @empty, @empty] 
+    @dashboard = [ 
+                 [@empty, @empty, @empty],
+                 [@empty, @empty, @empty],
+                 [@empty, @empty, @empty] 
     ]
   end
 
@@ -14,8 +17,13 @@ class Dashboard
     @dashboard.each { |row| p row }
   end
 
-  def position_is_valid?(position)
-    @dashboard[position.first][position.last] == @empty
+  def is_valid?(position)
+    @dashboard[position.first][position.last] == @empty ? true : invalid_movement
+  end
+
+  def invalid_movement
+    puts "invalid movement, try again"
+    false
   end
 
   def do_movement(user, position)
@@ -26,26 +34,34 @@ class Dashboard
     @dashboard.any? { |elem| elem.any? { |cell| cell == @empty } }
   end
 
-  def get_dashboard
-    @dashboard
-  end
-
-  def get_positions
-    pos_x = position_row
-    pos_y = position_column
-    [pos_x.to_i, pos_y.to_i]
+  def request_position
+    quadrant = choose_a_quadrant
+    convert_to_pair(quadrant)
   end
 
   private
 
-  def position_row
-    puts "now, select a number between 0 1 2 for the row"
+  def choose_a_quadrant
+    puts "\nChoose a quadrant of the board"
+    puts "| 0 | 1 | 2 |\n| 3 | 4 | 5 |\n| 6 | 7 | 8 |"
+    puts ""
     gets.chomp
   end
 
-  def position_column
-    puts "now, select a number between 0 1 2 for the column"
-    gets.chomp
+  def convert_to_pair(quadrant)
+    pair = case quadrant.to_i
+           when 0 then [0,0]
+           when 1 then [0,1]
+           when 2 then [0,2]
+           when 3 then [1,0]
+           when 4 then [1,1]
+           when 5 then [1,2]
+           when 6 then [2,0]
+           when 7 then [2,1]
+           when 8 then [2,2]
+           else [9,9]
+           end
+
   end
 
 end
