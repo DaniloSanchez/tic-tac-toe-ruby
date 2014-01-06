@@ -11,7 +11,7 @@ They have 5 classes,
  - valitador
  - messages
 
-To run the game you need to have ruby on the computer. You should only file ejecurar the main.rb
+To run the game you need to have ruby on the computer. You only need to run the main.rb
 
 Run
 --------------
