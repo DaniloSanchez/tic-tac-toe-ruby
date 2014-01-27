@@ -53,17 +53,17 @@ class Dashboard
 
   def convert_to_pair(quadrant)
     puts quadrant
-    case quadrant.to_i
-    when 0 then [0,0]
-    when 1 then [0,1]
-    when 2 then [0,2]
-    when 3 then [1,0]
-    when 4 then [1,1]
-    when 5 then [1,2]
-    when 6 then [2,0]
-    when 7 then [2,1]
-    when 8 then [2,2]
-    else [9,9]
+    case quadrant
+    when '0' then [0,0]
+    when '1' then [0,1]
+    when '2' then [0,2]
+    when '3' then [1,0]
+    when '4' then [1,1]
+    when '5' then [1,2]
+    when '6' then [2,0]
+    when '7' then [2,1]
+    when '8' then [2,2]
+    else ['_','_']
     end
   end
 
