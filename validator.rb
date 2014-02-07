@@ -1,9 +1,9 @@
 class Validator
 
-  attr_accessor :someone_won
+  attr_accessor :exists_winner
 
   def initialize
-    @someone_won = false
+    @exists_winner = false
   end
 
   def positions_to_win
@@ -19,7 +19,7 @@ class Validator
   end
 
   def there_is_a_winner?(dashboard)
-    @someone_won = check_status(dashboard)
+    @exists_winner = check_status(dashboard)
   end
 
   private
@@ -38,4 +38,3 @@ class Validator
   end
 
 end
-

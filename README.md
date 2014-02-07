@@ -9,7 +9,7 @@ They have 5 classes,
  - dashboard
  - game
  - valitador
- - messages
+ - display
 
 To run the game you need to have ruby on the computer. You only need to run the main.rb
 

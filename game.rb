@@ -1,20 +1,21 @@
-require './messages'
+require './display'
 require './dashboard'
 require './validator'
 
 class Game
 
+  attr_accessor :player, :name_player_one, :name_player_two
+
   def initialize
-    @messages = Messages.new
+    @messages = Display.new
     @dashboard = Dashboard.new
     @validator = Validator.new
     @turn = 0
-    @player, @name_player_one, @name_player_two = ''
   end
 
   def start_game
-    @messages.message_welcome
-    @messages.message_instructions
+    @messages.welcome
+    @messages.instructions
     request_names
     start
   end
@@ -22,11 +23,16 @@ class Game
   private
 
   def start
-    while @dashboard.exist_movement?
-      in_progress
-      break if @validator.there_is_a_winner?(@dashboard.dashboard)
-    end
+    in_progress while !end_game
     congratulations
+  end
+
+  def end_game
+    winner? || !@dashboard.exist_movement?
+  end
+
+  def winner?
+    @validator.there_is_a_winner?(@dashboard.dashboard)
   end
 
   def in_progress
@@ -37,31 +43,28 @@ class Game
 
   def next_turn
     @dashboard.print_dashboard
-    @player = @turn.even? ? @name_player_one : @name_player_two
-    @messages.message_next_player(@player)
+    @player = @turn.even? ? name_player_one : name_player_two
+    @messages.next_player(player)
   end
 
   def read_keyboard_in_process
     position = @dashboard.request_position
-    until @dashboard.is_valid?(position)
-      position = @dashboard.request_position
-    end
     @dashboard.do_movement(@turn,position)
   end
 
   def congratulations
     @dashboard.print_dashboard
-    if @validator.someone_won
-      @messages.message_congratulations(@player)
+    if @validator.exists_winner
+      @messages.congratulations(player)
     else
-      @messages.message_draw
+      @messages.draw_game?
     end
   end
 
   def request_names
-    @messages.message_name_player_one
+    @messages.name_player(1)
     @name_player_one = gets.chomp
-    @messages.message_name_player_two
+    @messages.name_player(2)
     @name_player_two = gets.chomp
   end
 
