@@ -1,71 +1,70 @@
-require './messages'
+require './display'
 require './dashboard'
-require './validation'
+require './validator'
 
 class Game
 
+  attr_accessor :player, :name_player_one, :name_player_two
+
   def initialize
-    @imessages = Messages.new
-    @idashboard = Dashboard.new
-    @ivalidation = Validation.new
+    @messages = Display.new
+    @dashboard = Dashboard.new
+    @validator = Validator.new
     @turn = 0
-    @player, @name_player_one, @name_player_two = ''
   end
 
   def start_game
-    @imessages.message_welcome
-    @imessages.message_instructions
-    set_names
+    @messages.welcome
+    @messages.instructions
+    request_names
     start
   end
 
   private
 
   def start
-    while @idashboard.exist_movement? == true
-      in_process
-      break if @ivalidation.check_status(@idashboard.get_dashboard)
-    end
+    in_progress while !end_game
     congratulations
   end
 
-  def in_process
-    print_dashboard_and_next_player
+  def end_game
+    winner? || !@dashboard.exist_movement?
+  end
+
+  def winner?
+    @validator.there_is_a_winner?(@dashboard.dashboard)
+  end
+
+  def in_progress
+    next_turn
     read_keyboard_in_process
     @turn = @turn += 1
   end
 
-  def print_dashboard_and_next_player
-    @player = @turn.even? ? @name_player_one : @name_player_two
-    @idashboard.print_dashboard
-    @imessages.message_next_player(@player)
+  def next_turn
+    @dashboard.print_dashboard
+    @player = @turn.even? ? name_player_one : name_player_two
+    @messages.next_player(player)
   end
 
   def read_keyboard_in_process
-    loop do
-      pos = @idashboard.get_positions
-      if @idashboard.position_is_valid?(pos)
-        @idashboard.do_movement(@turn,pos)
-        break
-      else
-        @imessages.message_invalid_movement
-      end
-    end
+    position = @dashboard.request_position
+    @dashboard.do_movement(@turn,position)
   end
 
   def congratulations
-    @idashboard.print_dashboard
-    if @ivalidation.check_status(@idashboard.get_dashboard)
-      @imessages.message_congratulations(@player)
+    @dashboard.print_dashboard
+    if @validator.exists_winner
+      @messages.congratulations(player)
     else
-      @imessages.message_draw
+      @messages.draw_game?
     end
   end
 
-  def set_names
-    @imessages.message_name_player_one
+  def request_names
+    @messages.name_player(1)
     @name_player_one = gets.chomp
-    @imessages.message_name_player_two
+    @messages.name_player(2)
     @name_player_two = gets.chomp
   end
 

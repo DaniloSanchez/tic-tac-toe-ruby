@@ -1,4 +1,10 @@
-class Validation
+class Validator
+
+  attr_accessor :exists_winner
+
+  def initialize
+    @exists_winner = false
+  end
 
   def positions_to_win
     [[[0,0],[0,1],[0,2]],
@@ -12,6 +18,12 @@ class Validation
     ]
   end
 
+  def there_is_a_winner?(dashboard)
+    @exists_winner = check_status(dashboard)
+  end
+
+  private
+
   def check_status(dashboard)
     check_status_by_player(dashboard,'_X_') ||
     check_status_by_player(dashboard,'_O_')
@@ -24,4 +36,5 @@ class Validation
       end
     end
   end
+
 end
