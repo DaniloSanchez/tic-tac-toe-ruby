@@ -6,6 +6,12 @@ class Validator
     @exists_winner = false
   end
 
+  def there_is_a_winner?(dashboard)
+    @exists_winner = check_status(dashboard)
+  end
+
+  private
+
   def positions_to_win
     [[[0,0],[0,1],[0,2]],
      [[1,0],[1,1],[1,2]],
@@ -18,15 +24,9 @@ class Validator
     ]
   end
 
-  def there_is_a_winner?(dashboard)
-    @exists_winner = check_status(dashboard)
-  end
-
-  private
-
   def check_status(dashboard)
-    check_status_by_player(dashboard,'_X_') ||
-    check_status_by_player(dashboard,'_O_')
+    check_status_by_player(dashboard,1) ||
+    check_status_by_player(dashboard,0)
   end
 
   def check_status_by_player(dashboard,option)

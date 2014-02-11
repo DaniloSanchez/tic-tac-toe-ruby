@@ -7,15 +7,15 @@ class Game
   attr_accessor :player, :name_player_one, :name_player_two
 
   def initialize
-    @messages = Display.new
+    @display = Display.new
     @dashboard = Dashboard.new
     @validator = Validator.new
     @turn = 0
   end
 
   def start_game
-    @messages.welcome
-    @messages.instructions
+    @display.welcome_message
+    @display.instructions
     request_names
     start
   end
@@ -23,8 +23,8 @@ class Game
   private
 
   def start
-    in_progress while !end_game
-    congratulations
+    in_progress until end_game
+    final_message
   end
 
   def end_game
@@ -32,40 +32,54 @@ class Game
   end
 
   def winner?
-    @validator.there_is_a_winner?(@dashboard.dashboard)
+    @validator.there_is_a_winner?(@dashboard.board)
   end
 
   def in_progress
+    @display.print_board(@dashboard.board)
     next_turn
-    read_keyboard_in_process
+    get_position
     @turn = @turn += 1
   end
 
   def next_turn
-    @dashboard.print_dashboard
     @player = @turn.even? ? name_player_one : name_player_two
-    @messages.next_player(player)
+    @display.next_player(player)
   end
 
-  def read_keyboard_in_process
-    position = @dashboard.request_position
-    @dashboard.do_movement(@turn,position)
+  def get_position
+    position = request_position
+    @dashboard.do_movement(@turn%2,position)
+  end
+
+  def request_position
+    quadrant = @display.choose_a_quadrant
+    pair = @display.convert_to_pair(quadrant)
+    @dashboard.available_position?(pair) ? pair : invalid_request
+  end
+
+  def invalid_request
+    @display.quadrant_occupied
+    request_position
+  end
+
+  def final_message
+    @validator.exists_winner ? congratulations : draw
   end
 
   def congratulations
-    @dashboard.print_dashboard
-    if @validator.exists_winner
-      @messages.congratulations(player)
-    else
-      @messages.draw_game?
-    end
+    @display.print_board(@dashboard.board)
+    @display.congratulations(player)
+  end
+
+  def draw
+    @display.print_board(@dashboard.board)
+    @display.draw_game
   end
 
   def request_names
-    @messages.name_player(1)
-    @name_player_one = gets.chomp
-    @messages.name_player(2)
-    @name_player_two = gets.chomp
+    @name_player_one = @display.name_player(1)
+    @name_player_two = @display.name_player(2)
   end
 
 end
