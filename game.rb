@@ -1,6 +1,7 @@
 require './display'
 require './dashboard'
 require './validator'
+require './request'
 
 class Game
 
@@ -10,6 +11,7 @@ class Game
     @display = Display.new
     @dashboard = Dashboard.new
     @validator = Validator.new
+    @request = Request.new
     @turn = 0
   end
 
@@ -53,8 +55,8 @@ class Game
   end
 
   def request_position
-    quadrant = @display.choose_a_quadrant
-    pair = @display.convert_to_pair(quadrant)
+    quadrant = @request.choose_a_quadrant
+    pair = @request.convert_to_pair(quadrant)
     @dashboard.available_position?(pair) ? pair : invalid_request
   end
 
@@ -78,8 +80,8 @@ class Game
   end
 
   def request_names
-    @name_player_one = @display.name_player(1)
-    @name_player_two = @display.name_player(2)
+    @name_player_one = @request.name_player(1)
+    @name_player_two = @request.name_player(2)
   end
 
 end
